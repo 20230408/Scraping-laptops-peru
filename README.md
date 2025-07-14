@@ -52,9 +52,9 @@ Este trabajo fue desarrollado como parte del curso:
 
 ## 👨‍💻 Autores
 
-| Nombre             | Rol                                                  |
+| Nombre             | Usuario                                                 |
 |--------------------|------------------------------------------------------|
-| Victor López Acuña | Programador principal, integración y documentación  |
-| Freddy Ramos       | Recolección de datos vía APIs, limpieza y depuración |
+| Victor López Acuña | Victorlopez281199  |
+| Freddy Ramos       | 20230408 |
 
 
