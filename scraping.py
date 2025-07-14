@@ -2,75 +2,69 @@ import requests
 import pandas as pd
 import os
 
-# Crear carpeta de salida si no existe
-os.makedirs("data", exist_ok=True)
-
-def fetch_coingecko(top_n=10):
-    url = "https://api.coingecko.com/api/v3/coins/markets"
+def buscar_en_plazavea(producto, cantidad=10):
+    url = "https://www.plazavea.com.pe/api/catalog_system/pub/products/search"
     params = {
-        "vs_currency": "usd",
-        "order": "market_cap_desc",
-        "per_page": top_n,
-        "page": 1,
-        "price_change_percentage": "24h"
+        "ft": producto,
+        "_from": 0,
+        "_to": cantidad - 1
     }
     r = requests.get(url, params=params)
     data = r.json()
-    return [
-        {
-            "coin": c["name"],
-            "fuente": "CoinGecko",
-            "symbol": c["symbol"].upper(),
-            "price_usd": c["current_price"],
-            "market_cap": c["market_cap"],
-            "change_24h": c["price_change_percentage_24h"]
-        }
-        for c in data
-    ]
+    resultados = []
+    for item in data:
+        try:
+            nombre = item['productName']
+            precio = item['items'][0]['sellers'][0]['commertialOffer']['Price']
+            resultados.append({
+                "supermercado": "Plazavea",
+                "producto_buscado": producto,
+                "nombre": nombre,
+                "precio": precio
+            })
+        except:
+            continue
+    return resultados
 
-def fetch_coinlore(top_n=10):
-    url = "https://api.coinlore.net/api/tickers/?limit={}".format(top_n)
-    r = requests.get(url)
-    data = r.json()["data"]
-    return [
-        {
-            "coin": c["name"],
-            "fuente": "Coinlore",
-            "symbol": c["symbol"].upper(),
-            "price_usd": float(c["price_usd"]),
-            "market_cap": float(c["market_cap_usd"]),
-            "change_24h": float(c["percent_change_24h"])
-        }
-        for c in data
-    ]
+def buscar_en_metro(producto, cantidad=10):
+    url = "https://www.metro.pe/api/catalog_system/pub/products/search"
+    params = {
+        "ft": producto,
+        "_from": 0,
+        "_to": cantidad - 1
+    }
+    r = requests.get(url, params=params)
+    data = r.json()
+    resultados = []
+    for item in data:
+        try:
+            nombre = item['productName']
+            precio = item['items'][0]['sellers'][0]['commertialOffer']['Price']
+            resultados.append({
+                "supermercado": "Metro",
+                "producto_buscado": producto,
+                "nombre": nombre,
+                "precio": precio
+            })
+        except:
+            continue
+    return resultados
 
-def fetch_coinpaprika(top_n=10):
-    url = "https://api.coinpaprika.com/v1/tickers"
-    r = requests.get(url)
-    data = r.json()[:top_n]
-    return [
-        {
-            "coin": c["name"],
-            "fuente": "CoinPaprika",
-            "symbol": c["symbol"].upper(),
-            "price_usd": c["quotes"]["USD"]["price"],
-            "market_cap": c["quotes"]["USD"]["market_cap"],
-            "change_24h": c["quotes"]["USD"]["percent_change_24h"]
-        }
-        for c in data
-    ]
+# Ejecutar búsqueda
+productos = ["laptop"]
+resultados = []
 
-def main():
-    print("🔄 Extrayendo datos de APIs...")
+for prod in productos:
+    print(f"🔎 Buscando '{prod}' en Plazavea...")
+    resultados.extend(buscar_en_plazavea(prod))
 
-    cg = fetch_coingecko(10)
-    cl = fetch_coinlore(10)
-    cp = fetch_coinpaprika(10)
+    print(f"🔎 Buscando '{prod}' en Metro...")
+    resultados.extend(buscar_en_metro(prod))
 
-    all_data = cg + cl + cp
-    df = pd.DataFrame(all_data)
-    df.to_csv("data/crypto_por_moneda.csv", index=False)
-    print("✅ Datos guardados en 'data/crypto_por_moneda.csv'")
+# Guardar resultados
+df = pd.DataFrame(resultados)
+os.makedirs("data", exist_ok=True)
+df.to_csv("data/laptops_plazavea_metro.csv", index=False)
 
-if __name__ == "__main__":
-    main()
+print("✅ Archivo generado: data/laptops_plazavea_metro.csv")
+df.head()
