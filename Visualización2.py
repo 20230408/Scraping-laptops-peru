@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import os
 
 # Leer los datos
-df = pd.read_csv("data/laptops_supermercados.csv")
+df = pd.read_csv("data/laptops_limpio.csv")
 
 # Ordenar por precio
 df = df.sort_values("precio", ascending=False)
