@@ -2,22 +2,32 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
-# Carga del CSV
-df = pd.read_csv("data/crypto_por_moneda.csv")
+# Leer el archivo generado por el scraping
+df = pd.read_csv("data/laptops_supermercados.csv")
 
-# Crear carpeta si no existe
+# Agrupar por supermercado y calcular precio promedio
+promedios = df.groupby("supermercado")["precio"].mean().sort_values()
+
+# Crear carpeta para capturas si no existe
 os.makedirs("capturas", exist_ok=True)
 
-# Pivotear para que cada fuente sea una columna
-pivot = df.pivot(index="coin", columns="fuente", values="price_usd")
-
-# Gráfico de barras agrupadas
-ax = pivot.plot(kind="bar", figsize=(8, 5))
-plt.title("Precios de criptomonedas por fuente")
-plt.ylabel("Precio (USD)")
-plt.xlabel("Criptomoneda")
+# Crear gráfico de barras
+plt.figure(figsize=(8, 5))
+bars = plt.bar(promedios.index, promedios.values, color=["#007ACC", "#FF5733", "#2ECC71"])
+plt.title("Precio promedio de laptops por supermercado")
+plt.xlabel("Supermercado")
+plt.ylabel("Precio promedio (S/)")
 plt.xticks(rotation=0)
-plt.legend(title="Fuente")
+plt.grid(axis='y', linestyle='--', alpha=0.4)
+
+# Mostrar etiquetas encima de cada barra
+for bar in bars:
+    height = round(bar.get_height(), 2)
+    plt.text(bar.get_x() + bar.get_width() / 2, height + 50, f"S/ {height}", ha='center', fontsize=9)
+
+# Guardar el gráfico
 plt.tight_layout()
-plt.savefig("capturas/precios_por_moneda_ordenado.png")
-plt.show()
+plt.savefig("capturas/grafico_comparativo.png")
+plt.close()
+
+print("✅ Gráfico guardado en: capturas/grafico_comparativo.png")
