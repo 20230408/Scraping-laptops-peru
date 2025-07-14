@@ -2,6 +2,10 @@ import requests
 import pandas as pd
 import os
 
+# ─────────────────────────────────────────────
+# FUNCIONES PARA CADA SUPERMERCADO
+# ─────────────────────────────────────────────
+
 def buscar_en_plazavea(producto, cantidad=10):
     url = "https://www.plazavea.com.pe/api/catalog_system/pub/products/search"
     params = {
@@ -25,6 +29,7 @@ def buscar_en_plazavea(producto, cantidad=10):
         except:
             continue
     return resultados
+
 
 def buscar_en_metro(producto, cantidad=10):
     url = "https://www.metro.pe/api/catalog_system/pub/products/search"
@@ -50,21 +55,53 @@ def buscar_en_metro(producto, cantidad=10):
             continue
     return resultados
 
-# Ejecutar búsqueda
-productos = ["laptop"]
-resultados = []
 
-for prod in productos:
-    print(f"🔎 Buscando '{prod}' en Plazavea...")
-    resultados.extend(buscar_en_plazavea(prod))
+def buscar_en_vivanda(producto, cantidad=10):
+    url = "https://www.vivanda.com.pe/api/catalog_system/pub/products/search"
+    params = {
+        "ft": producto,
+        "_from": 0,
+        "_to": cantidad - 1
+    }
+    r = requests.get(url, params=params)
+    data = r.json()
+    resultados = []
+    for item in data:
+        try:
+            nombre = item['productName']
+            precio = item['items'][0]['sellers'][0]['commertialOffer']['Price']
+            resultados.append({
+                "supermercado": "Vivanda",
+                "producto_buscado": producto,
+                "nombre": nombre,
+                "precio": precio
+            })
+        except:
+            continue
+    return resultados
 
-    print(f"🔎 Buscando '{prod}' en Metro...")
-    resultados.extend(buscar_en_metro(prod))
+# ─────────────────────────────────────────────
+# BLOQUE PRINCIPAL
+# ─────────────────────────────────────────────
 
-# Guardar resultados
-df = pd.DataFrame(resultados)
-os.makedirs("data", exist_ok=True)
-df.to_csv("data/laptops_plazavea_metro.csv", index=False)
+if __name__ == "__main__":
+    productos = ["laptop"]
+    resultados = []
 
-print("✅ Archivo generado: data/laptops_plazavea_metro.csv")
-df.head()
+    for prod in productos:
+        print(f"🔎 Buscando '{prod}' en Plazavea...")
+        resultados.extend(buscar_en_plazavea(prod))
+
+        print(f"🔎 Buscando '{prod}' en Metro...")
+        resultados.extend(buscar_en_metro(prod))
+
+        print(f"🔎 Buscando '{prod}' en Vivanda...")
+        resultados.extend(buscar_en_vivanda(prod))
+
+    # Guardar resultados en CSV
+    df = pd.DataFrame(resultados)
+    os.makedirs("data", exist_ok=True)
+    df.to_csv("data/laptops_supermercados.csv", index=False)
+
+    print("✅ Archivo generado: data/laptops_supermercados.csv")
+    print(df.head())
