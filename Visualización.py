@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import os
 
 # Leer el archivo generado por el scraping
-df = pd.read_csv("data/laptops_supermercados.csv")
+df = pd.read_csv("laptops_limpio (1).csv")
 
 # Agrupar por supermercado y calcular precio promedio
 promedios = df.groupby("supermercado")["precio"].mean().sort_values()
@@ -27,7 +27,7 @@ for bar in bars:
 
 # Guardar el gráfico
 plt.tight_layout()
-plt.savefig("capturas/grafico_comparativo.png")
+plt.savefig("grafico_comparativo.png")
 plt.close()
 
 print("✅ Gráfico guardado en: capturas/grafico_comparativo.png")
