@@ -1,28 +1,80 @@
-### Tema del Proyecto
-**Análisis comparativo de criptomonedas desde múltiples fuentes públicas**
+# 🛍️ Comparación de precios de laptops en supermercados peruanos
 
-### Relevancia y Aporte
-Este proyecto permite analizar en tiempo real los precios, capitalización de mercado y variaciones porcentuales de las principales criptomonedas. Utiliza tres APIs confiables para ofrecer una visión comparativa que puede apoyar la toma de decisiones financieras informadas.
+Este proyecto permite comparar los precios de **laptops** en tres supermercados en línea del Perú, utilizando sus **APIs públicas**. El objetivo es automatizar la recolección de datos reales para análisis comparativo.
 
-### Fuentes de Datos
-- [CoinGecko API](https://www.coingecko.com/en/api)
-- [CoinCap API](https://docs.coincap.io/)
-- [CoinPaprika API](https://api.coinpaprika.com/)
+---
 
-Se recolectarán los datos de las 10 principales criptomonedas desde cada fuente.
+## 📌 Objetivo
 
-### Objetivos
-- Extraer datos clave (símbolo, nombre, precio, market cap, cambio en 24h) desde las tres APIs.
-- Unificar y estructurar los datos en un archivo `.csv`.
-- Visualizar y comparar los valores por fuente para detectar similitudes y diferencias.
+Automatizar la extracción de precios de laptops desde:
 
-### Producto Final
-- Script en Python (`cripto_scraper.py`) que realiza la extracción y guardado.
-- Archivo `crypto_comparativa.csv` con los datos integrados.
-- Gráficos de comparación (por precio, capitalización, etc.).
-- Repositorio en GitHub con documentación (`README.md`), código comentado y guía de uso.
+- 🛒 Plazavea
+- 🛒 Metro
+- 🛒 Vivanda
 
-### Integrantes
-- Ramos Freddy (Github: 20230408)
-- López Victor (GitHub: VictorLopez281199)
+---
 
+## ⚙️ Estructura del proyecto
+
+```
+📁 data/
+ └─ laptops_supermercados.csv     ← Datos combinados desde Plazavea, Metro y Vivanda
+📄 scraping_supermercados.py      ← Script principal de extracción
+📄 README.md                      ← Este archivo
+```
+
+---
+
+## 🚀 Cómo ejecutar
+
+### 1. Instalar dependencias
+
+Asegúrate de tener Python 3 instalado, luego ejecuta:
+
+```bash
+pip install pandas requests
+```
+
+### 2. Ejecutar el script
+
+```bash
+python scraping_supermercados.py
+```
+
+Se generará automáticamente el archivo `data/laptops_supermercados.csv`.
+
+---
+
+## 📄 Formato del archivo de salida
+
+| supermercado | producto_buscado | nombre                       | precio   |
+|--------------|------------------|------------------------------|----------|
+| Plazavea     | laptop           | Laptop HP Ryzen 5            | 2099.00  |
+| Metro        | laptop           | Laptop Lenovo IdeaPad 3      | 1899.00  |
+| Vivanda      | laptop           | Laptop Asus Intel Core i5    | 2499.00  |
+
+---
+
+## 👨‍🏫 Proyecto académico
+
+Este trabajo fue desarrollado como parte del curso:
+
+- **Diseños Experimentales I**
+- Docente: Luz Bullón Camarena
+
+---
+
+## 👨‍💻 Autores
+
+| Nombre             | Usuarios                                                  |
+|--------------------|------------------------------------------------------|
+| Victor López Acuña | Victorlopez281199  |
+| Freddy Ramos       | 20230408 |
+
+---
+
+## 📊 Siguientes pasos (opcional)
+
+- Agregar gráficos comparativos por tienda
+- Extender el análisis a más productos: leche, arroz, azúcar, etc.
+- Comparar con tiendas como Ripley y Falabella (requiere Selenium)
