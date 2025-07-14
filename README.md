@@ -16,12 +16,10 @@ Automatizar la extracción de precios de laptops desde:
 
 ## ⚙️ Estructura del proyecto
 
-```
 📁 data/
  └─ laptops_supermercados.csv     ← Datos combinados desde Plazavea, Metro y Vivanda
 📄 scraping_supermercados.py      ← Script principal de extracción
 📄 README.md                      ← Este archivo
-```
 
 ---
 
@@ -43,38 +41,20 @@ python scraping_supermercados.py
 
 Se generará automáticamente el archivo `data/laptops_supermercados.csv`.
 
----
-
-## 📄 Formato del archivo de salida
-
-| supermercado | producto_buscado | nombre                       | precio   |
-|--------------|------------------|------------------------------|----------|
-| Plazavea     | laptop           | Laptop HP Ryzen 5            | 2099.00  |
-| Metro        | laptop           | Laptop Lenovo IdeaPad 3      | 1899.00  |
-| Vivanda      | laptop           | Laptop Asus Intel Core i5    | 2499.00  |
-
----
 
 ## 👨‍🏫 Proyecto académico
 
 Este trabajo fue desarrollado como parte del curso:
 
-- **Diseños Experimentales I**
-- Docente: Luz Bullón Camarena
+- **Lenguaje de Programación II**
 
 ---
 
 ## 👨‍💻 Autores
 
-| Nombre             | Usuarios                                                  |
+| Nombre             | Rol                                                  |
 |--------------------|------------------------------------------------------|
-| Victor López Acuña | Victorlopez281199  |
-| Freddy Ramos       | 20230408 |
+| Victor López Acuña | Programador principal, integración y documentación  |
+| Freddy Ramos       | Recolección de datos vía APIs, limpieza y depuración |
 
----
 
-## 📊 Siguientes pasos (opcional)
-
-- Agregar gráficos comparativos por tienda
-- Extender el análisis a más productos: leche, arroz, azúcar, etc.
-- Comparar con tiendas como Ripley y Falabella (requiere Selenium)
